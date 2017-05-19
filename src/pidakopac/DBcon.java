@@ -16,11 +16,7 @@ public class DBcon {
     private Statement statement;
     private ResultSet rs;
     private PreparedStatement psmt;
-    
-    public Connection getCon(){
-        return con;
-    }
-    
+      
     public DBcon(String userDB, String senhaDB, String serverDB) throws SQLException {
         DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());//Realiza o carregamento do driver JBDC
         DBURL = serverDB;

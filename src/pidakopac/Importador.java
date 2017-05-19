@@ -44,7 +44,7 @@ public class Importador {
                     insere = 1;
                 } catch (NumberFormatException e) {
                     insere = 0;
-                    System.out.println("Erro na linha de id de:" + dados[0]);
+                    System.out.println("Erro na linha do CSV do estado do " + banco.retornaCelula("select nome_estado from estado where id_estado="+ _id_estado) + " id de:" + dados[0]);
                 }
                 if (insere == 1) {
                     if (!banco.jaExiste("select id_municipio from municipio where UPPER(nome_municipio) ='" + nome_municipio.toUpperCase() + "'")) {
