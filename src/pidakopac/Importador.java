@@ -7,6 +7,7 @@ import java.sql.SQLException;
 
 public class Importador {
 
+    private int insere = 0;
     private DBcon banco;
     private config config = new config();
     /*----------------Municipio-----------------*/
@@ -32,21 +33,28 @@ public class Importador {
                 //Abre conexao
                 banco = new DBcon(config.getUserDB(), config.getSenhaDB(), config.getServerDB());
                 dados = linhaAtual.split(",");
-                id_digs = Integer.parseInt(dados[1]);
-                nome_empreendimento = dados[2];
-                total_investido = Double.parseDouble(dados[5]);
-                nome_municipio = dados[7];
-                executores = dados[8];
-                orgao_fiscalizador = dados[9];
-                id_estagio = Integer.parseInt(dados[10]);
-                
-                if (!banco.jaExiste("select id_municipio from municipio where UPPER(nome_municipio) ='" + nome_municipio.toUpperCase() + "'")) {
-                    banco.exec("insert into municipio values(seq_id_municipio.nextval,'" + nome_municipio + "'," + _id_estado + ")");
-                    id_municipio = Integer.parseInt(banco.retornaCelula("select id_municipio from municipio where UPPER(nome_municipio) ='" + nome_municipio.toUpperCase() + "'"));
-                } else {
-                    id_municipio = Integer.parseInt(banco.retornaCelula("select id_municipio from municipio where UPPER(nome_municipio) ='" + nome_municipio.toUpperCase() + "'"));
+                try {
+                    id_digs = Integer.parseInt(dados[1]);
+                    nome_empreendimento = dados[2];
+                    total_investido = Double.parseDouble(dados[5]);
+                    nome_municipio = dados[7];
+                    executores = dados[8];
+                    orgao_fiscalizador = dados[9];
+                    id_estagio = Integer.parseInt(dados[10]);
+                    insere = 1;
+                } catch (Exception e) {
+                    insere = 0;
+                    System.out.println("Erro na linha de id de:" + dados[0]);
                 }
-                banco.exec("insert into empreendimento values(seq_id_empreendimento.nextval,'" + orgao_fiscalizador + "','" + nome_empreendimento + "'," + total_investido + ",'" + executores + "'," + id_municipio + "," + _id_estado + "," + id_digs + "," + id_estagio + ")");
+                if (insere == 1) {
+                    if (!banco.jaExiste("select id_municipio from municipio where UPPER(nome_municipio) ='" + nome_municipio.toUpperCase() + "'")) {
+                        banco.exec("insert into municipio values(seq_id_municipio.nextval,'" + nome_municipio + "'," + _id_estado + ")");
+                        id_municipio = Integer.parseInt(banco.retornaCelula("select id_municipio from municipio where UPPER(nome_municipio) ='" + nome_municipio.toUpperCase() + "'"));
+                    } else {
+                        id_municipio = Integer.parseInt(banco.retornaCelula("select id_municipio from municipio where UPPER(nome_municipio) ='" + nome_municipio.toUpperCase() + "'"));
+                    }
+                    banco.exec("insert into empreendimento values(seq_id_empreendimento.nextval,'" + orgao_fiscalizador + "','" + nome_empreendimento + "'," + total_investido + ",'" + executores + "'," + id_municipio + "," + _id_estado + "," + id_digs + "," + id_estagio + ")");
+                }
                 //Fecha conexao
                 banco.desconectar();
             }
