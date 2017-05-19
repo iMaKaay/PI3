@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 public class Importador {
 
-    private int insere = 0;
+    private int insere;
     private DBcon banco;
     private config config = new config();
     /*----------------Municipio-----------------*/
@@ -42,7 +42,7 @@ public class Importador {
                     orgao_fiscalizador = dados[9];
                     id_estagio = Integer.parseInt(dados[10]);
                     insere = 1;
-                } catch (Exception e) {
+                } catch (NumberFormatException e) {
                     insere = 0;
                     System.out.println("Erro na linha de id de:" + dados[0]);
                 }
