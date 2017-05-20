@@ -23,6 +23,7 @@ public class Importador {
 
     public void importar(String caminho, int _id_estado) throws SQLException {
         BufferedReader buffer = null;
+        String aux = null;
         try {
             config.carregar();
             String linhaAtual;
@@ -42,11 +43,17 @@ public class Importador {
                     orgao_fiscalizador = dados[9];
                     id_estagio = Integer.parseInt(dados[10]);
                     insere = 1;
+                    if (dados[7].length() > 0) {
+                        aux = dados[7];
+                    }
                 } catch (NumberFormatException e) {
                     insere = 0;
-                    System.out.println("Erro na linha do CSV do estado do " + banco.retornaCelula("select nome_estado from estado where id_estado="+ _id_estado) + " id de:" + dados[0]);
+                    System.out.println("CSV do estado do " + banco.retornaCelula("select nome_estado from estado where id_estado=" + _id_estado) + " erro na linha de id igual a:" + dados[0]);
                 }
                 if (insere == 1) {
+                    if (nome_municipio.isEmpty()) {
+                        nome_municipio = aux;
+                    }
                     if (!banco.jaExiste("select id_municipio from municipio where UPPER(nome_municipio) ='" + nome_municipio.toUpperCase() + "'")) {
                         banco.exec("insert into municipio values(seq_id_municipio.nextval,'" + nome_municipio + "'," + _id_estado + ")");
                         id_municipio = Integer.parseInt(banco.retornaCelula("select id_municipio from municipio where UPPER(nome_municipio) ='" + nome_municipio.toUpperCase() + "'"));
@@ -58,6 +65,7 @@ public class Importador {
                 //Fecha conexao
                 banco.desconectar();
             }
+            banco.desconectar();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
