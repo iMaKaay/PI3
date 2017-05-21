@@ -56,6 +56,7 @@ public class TelaCadastro extends javax.swing.JFrame {
         botaoOk = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("dakoPAC");
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setText("Cadastrar Empreendimento");

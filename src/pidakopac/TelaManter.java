@@ -68,6 +68,7 @@ public class TelaManter extends javax.swing.JFrame {
         botaoVoltar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("dakoPAC");
 
         jLabel1.setText("Nome:");
 

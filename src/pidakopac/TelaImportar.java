@@ -38,6 +38,7 @@ public class TelaImportar extends javax.swing.JFrame {
         _estado = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("dakoPAC");
 
         botaoProcurar.setText("Procurar");
         botaoProcurar.addActionListener(new java.awt.event.ActionListener() {
