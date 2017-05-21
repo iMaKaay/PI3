@@ -1,5 +1,6 @@
 package pidakopac;
 
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -213,14 +214,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_botaoBuscarActionPerformed
 
     private void botaoExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoExportarActionPerformed
-        this.disable();
-        TelaExportar exportar = new TelaExportar();
-        exportar.setVisible(true);
-        exportar.setPai(this);
-        exportar.setBanco(banco);
         try {
-            exportar.carregaLista(banco);
-        } catch (SQLException ex) {
+            Json json = new Json();
+            json.exportar(banco);
+        } catch (IOException ex) {
             Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_botaoExportarActionPerformed
