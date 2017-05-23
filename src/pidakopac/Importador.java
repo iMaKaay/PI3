@@ -4,12 +4,12 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.Normalizer;
 
 public class Importador {
 
     private int insere;
     private DBcon banco;
-    private config config = new config();
     /*----------------Municipio-----------------*/
     private int id_municipio;
     private String nome_municipio = " ";
@@ -25,22 +25,21 @@ public class Importador {
         BufferedReader buffer = null;
         String aux = null;
         try {
-            config.carregar();
             String linhaAtual;
             String[] dados = new String[11];
             buffer = new BufferedReader(new FileReader(caminho));
             buffer.readLine();
             while ((linhaAtual = buffer.readLine()) != null) {
                 //Abre conexao
-                banco = new DBcon(config.getUserDB(), config.getSenhaDB(), config.getServerDB());
-                dados = linhaAtual.split(";");
+                banco = new DBcon("dako", "123456", "jdbc:oracle:thin:@localhost:1521:XE");
+                dados = linhaAtual.split(",");
                 try {
                     id_digs = Integer.parseInt(dados[1]);
-                    nome_empreendimento = dados[2];
+                    nome_empreendimento = removerAcentos(dados[2]);
                     total_investido = Double.parseDouble(dados[5]);
-                    nome_municipio = dados[7];
-                    executores = dados[8];
-                    orgao_fiscalizador = dados[9];
+                    nome_municipio = removerAcentos(dados[7]);
+                    executores = removerAcentos(dados[8]);
+                    orgao_fiscalizador = removerAcentos(dados[9]);
                     id_estagio = Integer.parseInt(dados[10]);
                     insere = 1;
                     if (dados[7].length() > 0) {
@@ -80,4 +79,9 @@ public class Importador {
 
     }
     //--------------------------------------------------------------------//
+    
+    public String removerAcentos(String acentuada) {
+        CharSequence cs = new StringBuilder(acentuada);
+        return Normalizer.normalize(cs, Normalizer.Form.NFKD).replaceAll("[^\\p{ASCII}]", "");
+    }
 }

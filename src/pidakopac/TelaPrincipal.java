@@ -8,11 +8,11 @@ import java.util.logging.Logger;
 import static javax.swing.JOptionPane.showMessageDialog;
 
 public class TelaPrincipal extends javax.swing.JFrame {
-    
+
     private DBcon banco;
     arvoreEmpreendimento arvore;
     TelaInformacao informacao = new TelaInformacao();
-    
+
     public void setBanco(DBcon _banco) {
         banco = _banco;
     }
@@ -20,6 +20,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     public void alerta(String _s) {
         showMessageDialog(null, _s);
     }
+
     public TelaPrincipal() {
         initComponents();
     }
@@ -170,7 +171,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
         TelaImportar importar = new TelaImportar();
         importar.setVisible(true);
         importar.setPai(this);
-        importar.setBanco(banco);
     }//GEN-LAST:event_botaoImportarActionPerformed
 
     private void _sairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event__sairActionPerformed
@@ -191,22 +191,29 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event__manterEmpreendimentoActionPerformed
 
     private void botaoBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoBuscarActionPerformed
-        arvore = new arvoreEmpreendimento(banco);
         try {
-            ResultSet rs = banco.exec("select nome_empreendimento from empreendimento"); //busca as empresas cadastradas no banco de dados.
-            while (rs.next()) {
-                arvore.adicionaEmp(rs.getString("nome_empreendimento"));//adiciona as empresas presentes no banco de dados a arvore.
-            }
-            String[] resultado = arvore.buscaNo(this.campoConsulta.getText());//cria um vetor com as informações referentes a empresa buscada.
-            if (resultado[0] != null) {
-                informacao.setPai(this);//cria referencia da interface pai na janela de informação
-                informacao.setVisible(true);
-                informacao.carregaDados(resultado[0], resultado[1], resultado[2], resultado[3]);//envia os dados carregados para a interface de informação.
-                this.disable();//desabilita a interação com a interface;
-                campoConsulta.setText(null);
-            }else{
-                showMessageDialog(null, "Empreendimento não encontrado!");
-                campoConsulta.setText(null);
+            DBcon BancoC = new DBcon("dako", "123456", "jdbc:oracle:thin:@localhost:1521:XE");
+            arvore = new arvoreEmpreendimento(BancoC);
+            try {
+                ResultSet rs = BancoC.exec("select nome_empreendimento from empreendimento"); //busca as empresas cadastradas no banco de dados.
+                while (rs.next()) {
+                    arvore.adicionaEmp(rs.getString("nome_empreendimento"));//adiciona as empresas presentes no banco de dados a arvore.
+                }
+                String[] resultado = arvore.buscaNo(this.campoConsulta.getText());//cria um vetor com as informações referentes a empresa buscada.
+                if (resultado[0] != null) {
+                    informacao.setPai(this);//cria referencia da interface pai na janela de informação
+                    informacao.setVisible(true);
+                    informacao.carregaDados(resultado[0], resultado[1], resultado[2], resultado[3], resultado[4], resultado[5]);//envia os dados carregados para a interface de informação.
+                    this.disable();//desabilita a interação com a interface;
+                    campoConsulta.setText(null);
+                } else {
+                    showMessageDialog(null, "Empreendimento não encontrado!");
+                    campoConsulta.setText(null);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                BancoC.desconectar();
             }
         } catch (SQLException ex) {
             Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);

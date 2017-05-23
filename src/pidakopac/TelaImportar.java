@@ -11,14 +11,9 @@ public class TelaImportar extends javax.swing.JFrame {
     
     private TelaPrincipal pai;
     private int id_estado;
-    private DBcon banco;
     
     public TelaImportar() {
         initComponents();
-    }
-    
-    public void setBanco(DBcon _banco) {
-        banco = _banco;
     }
 
     public void setPai(TelaPrincipal _pai) {
@@ -125,18 +120,26 @@ public class TelaImportar extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botaoOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoOkActionPerformed
-        this.setVisible(false);//Retorna para a tela de gerencia
-        pai.setVisible(true);
-        pai.enable(true);
-        Importador csv = new Importador();
-        try {
-            id_estado = Integer.parseInt(banco.retornaCelula("select id_estado from estado where upper(nome_estado) ='" + _estado.getText().toUpperCase() + "'"));
-            csv.importar(_caminho.getText(),id_estado);
-            showMessageDialog(null, "Sucesso na importação !!");
+        try {                                        
+            this.setVisible(false);//Retorna para a tela de gerencia
+            pai.setVisible(true);
+            pai.enable(true);
+            DBcon banco = new DBcon("dako", "123456", "jdbc:oracle:thin:@localhost:1521:XE");
+            Importador csv = new Importador();
+            try {
+                id_estado = Integer.parseInt(banco.retornaCelula("select id_estado from estado where upper(nome_estado) ='" + _estado.getText().toUpperCase() + "'"));
+                csv.importar(_caminho.getText(),id_estado);
+                showMessageDialog(null, "Sucesso na importação !!");
+            } catch (SQLException ex) {
+                Logger.getLogger(TelaImportar.class.getName()).log(Level.SEVERE, null, ex);
+                showMessageDialog(null, "Importação falhou !!");
+            }
+            finally{
+                    banco.desconectar();
+            }
         } catch (SQLException ex) {
             Logger.getLogger(TelaImportar.class.getName()).log(Level.SEVERE, null, ex);
-            showMessageDialog(null, "Importação falhou !!");
-        }     
+        }
     }//GEN-LAST:event_botaoOkActionPerformed
 
     private void botaoVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoVoltarActionPerformed

@@ -14,6 +14,10 @@ public class TelaManter extends javax.swing.JFrame {
     private String caminhoIndicadores;
     private arvoreEmpreendimento arvore;
     
+    public TelaPrincipal getTela(){
+        return principal;
+    }
+    
     public void setPrincipal(TelaPrincipal _tela) {
         this.principal = _tela;
     }
