@@ -1,24 +1,26 @@
 package pidakopac;
 
 public class TelaInformacao extends javax.swing.JFrame {
-    
+
     TelaPrincipal pai;
-    
-    public void setPai(TelaPrincipal _pai){
-        this.pai=_pai;
+
+    public void setPai(TelaPrincipal _pai) {
+        this.pai = _pai;
     }
-    
+
     public TelaInformacao() {
         initComponents();
     }
 
-    public void carregaDados(String orgao_fiscalizador, String nome_empreendimento, String executores, String total_investido) {
+    public void carregaDados(String orgao_fiscalizador, String nome_empreendimento, String executores, String total_investido, String Conversao, String Estagio) {
         this.campoOrgaoFislicalizador.setText(orgao_fiscalizador);
         this.campoNomeEmpreendimento.setText(nome_empreendimento);
         this.campoExecutores.setText(executores);
         this.campoTotalInvestido.setText(total_investido);
+        this.campoTipo.setText(Conversao);
+        this.campoEstagio.setText(Estagio);
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -33,6 +35,10 @@ public class TelaInformacao extends javax.swing.JFrame {
         campoExecutores = new javax.swing.JTextField();
         campoTotalInvestido = new javax.swing.JTextField();
         botaoVoltar = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        campoTipo = new javax.swing.JTextField();
+        campoEstagio = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("dakoPAC");
@@ -52,6 +58,10 @@ public class TelaInformacao extends javax.swing.JFrame {
             }
         });
 
+        jLabel5.setText("Tipo:");
+
+        jLabel6.setText("Estágio:");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -64,13 +74,17 @@ public class TelaInformacao extends javax.swing.JFrame {
                             .addComponent(jLabel2)
                             .addComponent(jLabel1)
                             .addComponent(jLabel3)
-                            .addComponent(jLabel4))
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel6))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(campoNomeEmpreendimento)
                             .addComponent(campoOrgaoFislicalizador)
                             .addComponent(campoExecutores)
-                            .addComponent(campoTotalInvestido, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)))
+                            .addComponent(campoTotalInvestido, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
+                            .addComponent(campoTipo)
+                            .addComponent(campoEstagio)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(botaoVoltar)))
@@ -95,9 +109,17 @@ public class TelaInformacao extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(campoTotalInvestido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(campoTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(campoEstagio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
+                .addGap(18, 18, 18)
                 .addComponent(botaoVoltar)
-                .addContainerGap())
+                .addGap(0, 11, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -122,9 +144,9 @@ public class TelaInformacao extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botaoVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoVoltarActionPerformed
-       this.setVisible(false);
-       pai.setVisible(true);
-       pai.enable();
+        this.setVisible(false);
+        pai.setVisible(true);
+        pai.enable();
     }//GEN-LAST:event_botaoVoltarActionPerformed
 
     public static void main(String args[]) {
@@ -161,14 +183,18 @@ public class TelaInformacao extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botaoVoltar;
+    private javax.swing.JTextField campoEstagio;
     private javax.swing.JTextField campoExecutores;
     private javax.swing.JTextField campoNomeEmpreendimento;
     private javax.swing.JTextField campoOrgaoFislicalizador;
+    private javax.swing.JTextField campoTipo;
     private javax.swing.JTextField campoTotalInvestido;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

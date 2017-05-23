@@ -14,6 +14,10 @@ public class TelaManter extends javax.swing.JFrame {
     private String caminhoIndicadores;
     private arvoreEmpreendimento arvore;
     
+    public TelaPrincipal getTela(){
+        return principal;
+    }
+    
     public void setPrincipal(TelaPrincipal _tela) {
         this.principal = _tela;
     }
@@ -189,7 +193,7 @@ public class TelaManter extends javax.swing.JFrame {
     }//GEN-LAST:event_botaoCadastrarActionPerformed
 
     private void botaoVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoVoltarActionPerformed
-        this.setVisible(false);
+        this.dispose();
         principal.setVisible(true);
         principal.enable();
     }//GEN-LAST:event_botaoVoltarActionPerformed

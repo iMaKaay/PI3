@@ -11,14 +11,9 @@ public class TelaImportar extends javax.swing.JFrame {
     
     private TelaPrincipal pai;
     private int id_estado;
-    private DBcon banco;
     
     public TelaImportar() {
         initComponents();
-    }
-    
-    public void setBanco(DBcon _banco) {
-        banco = _banco;
     }
 
     public void setPai(TelaPrincipal _pai) {
@@ -36,6 +31,8 @@ public class TelaImportar extends javax.swing.JFrame {
         botaoOk = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         _estado = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        _ano = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("dakoPAC");
@@ -63,6 +60,8 @@ public class TelaImportar extends javax.swing.JFrame {
 
         jLabel1.setText("Estado:");
 
+        jLabel2.setText("Ano:");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -75,14 +74,19 @@ public class TelaImportar extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(botaoOk))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(_caminho, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(botaoProcurar)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(_estado)))
+                        .addComponent(_estado))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addComponent(_caminho, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(botaoProcurar)
+                            .addGap(0, 0, Short.MAX_VALUE))
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addComponent(jLabel2)
+                            .addGap(24, 24, 24)
+                            .addComponent(_ano))))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -92,11 +96,15 @@ public class TelaImportar extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(_estado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(22, 22, 22)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(_ano, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(_caminho, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(botaoProcurar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(botaoVoltar)
                     .addComponent(botaoOk))
@@ -125,22 +133,30 @@ public class TelaImportar extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botaoOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoOkActionPerformed
-        this.setVisible(false);//Retorna para a tela de gerencia
-        pai.setVisible(true);
-        pai.enable(true);
-        Importador csv = new Importador();
-        try {
-            id_estado = Integer.parseInt(banco.retornaCelula("select id_estado from estado where upper(nome_estado) ='" + _estado.getText().toUpperCase() + "'"));
-            csv.importar(_caminho.getText(),id_estado);
-            showMessageDialog(null, "Sucesso na importação !!");
+        try {                                        
+            this.setVisible(false);//Retorna para a tela de gerencia
+            pai.setVisible(true);
+            pai.enable(true);
+            DBcon banco = new DBcon("dako", "123456", "jdbc:oracle:thin:@localhost:1521:XE");
+            Importador csv = new Importador();
+            try {
+                id_estado = Integer.parseInt(banco.retornaCelula("select id_estado from estado where upper(nome_estado) ='" + _estado.getText().toUpperCase() + "'"));
+                csv.importar(_caminho.getText(),id_estado,_ano.getText());
+                showMessageDialog(null, "Sucesso na importação !!");
+            } catch (SQLException ex) {
+                Logger.getLogger(TelaImportar.class.getName()).log(Level.SEVERE, null, ex);
+                showMessageDialog(null, "Importação falhou !!");
+            }
+            finally{
+                    banco.desconectar();
+            }
         } catch (SQLException ex) {
             Logger.getLogger(TelaImportar.class.getName()).log(Level.SEVERE, null, ex);
-            showMessageDialog(null, "Importação falhou !!");
-        }     
+        }
     }//GEN-LAST:event_botaoOkActionPerformed
 
     private void botaoVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoVoltarActionPerformed
-        this.setVisible(false);
+        this.dispose();
         pai.setVisible(true);
         pai.enable();
     }//GEN-LAST:event_botaoVoltarActionPerformed
@@ -186,12 +202,14 @@ public class TelaImportar extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField _ano;
     private javax.swing.JTextField _caminho;
     private javax.swing.JTextField _estado;
     private javax.swing.JButton botaoOk;
     private javax.swing.JButton botaoProcurar;
     private javax.swing.JButton botaoVoltar;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
 }

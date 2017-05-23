@@ -204,7 +204,8 @@ public class TelaCadastro extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botaoVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoVoltarActionPerformed
-        this.setVisible(false);
+        this.dispose();
+        TelaManter.getTela().setVisible(true);
         TelaManter.setVisible(true);
         TelaManter.enable();
         try {
