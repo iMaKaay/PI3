@@ -33,7 +33,7 @@ public class Importador {
             while ((linhaAtual = buffer.readLine()) != null) {
                 //Abre conexao
                 banco = new DBcon(config.getUserDB(), config.getSenhaDB(), config.getServerDB());
-                dados = linhaAtual.split(",");
+                dados = linhaAtual.split(";");
                 try {
                     id_digs = Integer.parseInt(dados[1]);
                     nome_empreendimento = dados[2];
