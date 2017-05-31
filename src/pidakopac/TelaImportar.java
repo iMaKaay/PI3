@@ -134,9 +134,6 @@ public class TelaImportar extends javax.swing.JFrame {
 
     private void botaoOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoOkActionPerformed
         try {                                        
-            this.setVisible(false);//Retorna para a tela de gerencia
-            pai.setVisible(true);
-            pai.enable(true);
             DBcon banco = new DBcon("dako", "123456", "jdbc:oracle:thin:@localhost:1521:XE");
             Importador csv = new Importador();
             try {

@@ -34,30 +34,36 @@ public class Importador {
                 banco = new DBcon("dako", "123456", "jdbc:oracle:thin:@localhost:1521:XE");
                 dados = linhaAtual.split(";");
                 try {
-                    id_digs = Integer.parseInt(dados[1]);
-                    nome_empreendimento = removerAcentos(dados[2]);
+                    id_digs = Integer.parseInt(dados[1].replaceAll("[/'-,\"]", ""));
+                    nome_empreendimento = dados[2].replaceAll("[/'-,\"]", "");
                     total_investido = Double.parseDouble(dados[5]);
-                    nome_municipio = removerAcentos(dados[7]);
-                    executores = removerAcentos(dados[8]);
-                    orgao_fiscalizador = removerAcentos(dados[9]);
-                    id_estagio = Integer.parseInt(dados[10]);
+                    nome_municipio = dados[7].replaceAll("[/'-,\"]", "");
+                    executores = dados[8].replaceAll("[/'-,\"]", "");
+                    orgao_fiscalizador = dados[9].replaceAll("[/'-,\"]", "");
+                    id_estagio = Integer.parseInt(dados[10].replaceAll("[/'-,\"]", ""));
                     insere = 1;
-                    if (dados[7].length() > 0) {
+                    if (dados[7].length() > 0 && dados[7].length() <= 100) {
                         aux = dados[7];
+                    }
+                    if (nome_empreendimento.length() == 0) {
+                        nome_empreendimento = "sem nome";
                     }
                 } catch (NumberFormatException e) {
                     insere = 0;
-                    System.out.println("CSV do estado do " + banco.retornaCelula("select nome_estado from estado where id_estado=" + _id_estado) + " erro na linha de id igual a:" + dados[0]);
+                    System.out.println(_ano + "-CSV do " + banco.retornaCelula("select nome_estado from estado where id_estado=" + _id_estado) + " erro na linha de id igual a:" + dados[0]);
                 }
                 if (insere == 1) {
                     if (nome_municipio.isEmpty()) {
                         nome_municipio = aux;
                     }
-                    if (!banco.jaExiste("select id_municipio from municipio where UPPER(nome_municipio) ='" + nome_municipio.toUpperCase() + "'")) {
+                    if (nome_municipio.length() > 100) {
+                        nome_municipio = aux;
+                    }
+                    if (!banco.jaExiste("select id_municipio from municipio where id_estado =" + _id_estado + "and UPPER(nome_municipio) ='" + nome_municipio.toUpperCase() + "'")) {
                         banco.exec("insert into municipio values(seq_id_municipio.nextval,'" + nome_municipio + "'," + _id_estado + ")");
-                        id_municipio = Integer.parseInt(banco.retornaCelula("select id_municipio from municipio where UPPER(nome_municipio) ='" + nome_municipio.toUpperCase() + "'"));
+                        id_municipio = Integer.parseInt(banco.retornaCelula("select id_municipio from municipio where id_estado =" + _id_estado + "and  UPPER(nome_municipio) ='" + nome_municipio.toUpperCase() + "'"));
                     } else {
-                        id_municipio = Integer.parseInt(banco.retornaCelula("select id_municipio from municipio where UPPER(nome_municipio) ='" + nome_municipio.toUpperCase() + "'"));
+                        id_municipio = Integer.parseInt(banco.retornaCelula("select id_municipio from municipio where id_estado =" + _id_estado + "and  UPPER(nome_municipio) ='" + nome_municipio.toUpperCase() + "'"));
                     }
                     banco.exec("insert into empreendimento values(seq_id_empreendimento.nextval,'" + orgao_fiscalizador + "','" + nome_empreendimento + "'," + total_investido + ",'" + executores + "'," + id_municipio + "," + _id_estado + "," + id_digs + "," + id_estagio + ",'" + _ano + "')");
                 }
@@ -79,7 +85,7 @@ public class Importador {
 
     }
     //--------------------------------------------------------------------//
-    
+
     public String removerAcentos(String acentuada) {
         CharSequence cs = new StringBuilder(acentuada);
         return Normalizer.normalize(cs, Normalizer.Form.NFKD).replaceAll("[^\\p{ASCII}]", "");

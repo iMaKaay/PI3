@@ -23,22 +23,25 @@ public class Json {
     }
 
     private void geraJson(String ano) throws SQLException, FileNotFoundException, UnsupportedEncodingException {
-        DBcon _banco = new DBcon("dako", "123456", "jdbc:oracle:thin:@localhost:1521:XE"); 
+        DBcon _banco = new DBcon("dako", "123456", "jdbc:oracle:thin:@localhost:1521:XE");
         //Gera o arquivo JSON
         PrintWriter writer;
         writer = new PrintWriter(caminhoIndicadores + "\\" + ("Dados do ano de " + ano + ".json"), "UTF-8");
         for (int i = 1; i <= 27; i++) {
-            writer.println("{\"" + "Estado_" + i +"\":{");
+            if (i == 1) {
+                writer.println("{");
+            }
+            writer.println("\"" + "Estado_" + i + "\":{");
             writer.println("\"Em_licitação\":\"" + _banco.retornaCelula("select count(id_estagio) from empreendimento where id_estado =" + i + " and ID_ESTAGIO = 40 and ano='" + ano + "'") + "\",");
             writer.println("\"Em_obras\":\"" + _banco.retornaCelula("select count(id_estagio) from empreendimento where id_estado =" + i + " and ID_ESTAGIO = 70 and ano='" + ano + "'") + "\",");
             writer.println("\"Em_execução\":\"" + _banco.retornaCelula("select count(id_estagio) from empreendimento where id_estado =" + i + " and ID_ESTAGIO = 71 and ano='" + ano + "'") + "\",");
             writer.println("\"Concluido\":\"" + _banco.retornaCelula("select count(id_estagio) from empreendimento where id_estado =" + i + " and ID_ESTAGIO = 90 and ano='" + ano + "'") + "\",");
-            writer.println("\"Total_Investido\":\"" + _banco.retornaCelula("select sum(total_investido) from empreendimento where id_estado =" + i +  "and ano='" + ano + "'") + "\"");
+            writer.println("\"Total_Investido\":\"" + _banco.retornaCelula("select sum(total_investido) from empreendimento where id_estado =" + i + "and ano='" + ano + "'") + "\"}");
             if (i != 27) {
-                writer.println("},");
+                writer.println(",");
             }
             if (i == 27) {
-                writer.println("}}");
+                writer.println("}");
             }
         }
         writer.close();
