@@ -13,7 +13,6 @@ public class Json {
 
     String caminhoLista;
     String caminhoIndicadores;
-    DBcon banco;
 
     public Json() throws IOException {
         config config = new config(); //----------
@@ -24,14 +23,16 @@ public class Json {
 
     private void geraJson(String ano) throws SQLException, FileNotFoundException, UnsupportedEncodingException {
         DBcon _banco = new DBcon("dako", "123456", "jdbc:oracle:thin:@localhost:1521:XE");
+        String nome_estado = null;
         //Gera o arquivo JSON
         PrintWriter writer;
         writer = new PrintWriter(caminhoIndicadores + "\\" + ("Dados do ano de " + ano + ".json"), "UTF-8");
         for (int i = 1; i <= 27; i++) {
+            nome_estado = _banco.retornaCelula("select nome_estado from estado where id_estado =" + i);
             if (i == 1) {
                 writer.println("{");
             }
-            writer.println("\"" + "Estado_" + i + "\":{");
+            writer.println("\"" + nome_estado + "\":{");
             writer.println("\"Em_licitação\":\"" + _banco.retornaCelula("select count(id_estagio) from empreendimento where id_estado =" + i + " and ID_ESTAGIO = 40 and ano='" + ano + "'") + "\",");
             writer.println("\"Em_obras\":\"" + _banco.retornaCelula("select count(id_estagio) from empreendimento where id_estado =" + i + " and ID_ESTAGIO = 70 and ano='" + ano + "'") + "\",");
             writer.println("\"Em_execução\":\"" + _banco.retornaCelula("select count(id_estagio) from empreendimento where id_estado =" + i + " and ID_ESTAGIO = 71 and ano='" + ano + "'") + "\",");

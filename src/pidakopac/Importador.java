@@ -56,9 +56,6 @@ public class Importador {
                     if (nome_municipio.isEmpty()) {
                         nome_municipio = aux;
                     }
-                    if (nome_municipio.length() > 100) {
-                        nome_municipio = aux;
-                    }
                     if (!banco.jaExiste("select id_municipio from municipio where id_estado =" + _id_estado + "and UPPER(nome_municipio) ='" + nome_municipio.toUpperCase() + "'")) {
                         banco.exec("insert into municipio values(seq_id_municipio.nextval,'" + nome_municipio + "'," + _id_estado + ")");
                         id_municipio = Integer.parseInt(banco.retornaCelula("select id_municipio from municipio where id_estado =" + _id_estado + "and  UPPER(nome_municipio) ='" + nome_municipio.toUpperCase() + "'"));
@@ -85,9 +82,4 @@ public class Importador {
 
     }
     //--------------------------------------------------------------------//
-
-    public String removerAcentos(String acentuada) {
-        CharSequence cs = new StringBuilder(acentuada);
-        return Normalizer.normalize(cs, Normalizer.Form.NFKD).replaceAll("[^\\p{ASCII}]", "");
-    }
 }
