@@ -1,8 +1,10 @@
 package pidakopac;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.sql.SQLException;
 import java.text.Normalizer;
 
@@ -22,10 +24,7 @@ public class Importador {
     private int id_digs;
 
     public String remove(String str) {
-        str = Normalizer.normalize(str, Normalizer.Form.NFD);
-        str = str.replaceAll("[^\\p{ASCII}]", "");
-        return str;
-
+        return Normalizer.normalize(str, Normalizer.Form.NFKD).replaceAll("[^\\p{ASCII}]", "");
     }
 
     public void importar(String caminho, int _id_estado, String _ano) throws SQLException {
@@ -34,7 +33,7 @@ public class Importador {
         try {
             String linhaAtual;
             String[] dados = new String[11];
-            buffer = new BufferedReader(new FileReader(caminho));
+            buffer = new BufferedReader(new InputStreamReader(new FileInputStream(caminho), Charset.forName("ISO-8859-1")));
             buffer.readLine();
             while ((linhaAtual = buffer.readLine()) != null) {
                 //Abre conexao
@@ -69,7 +68,7 @@ public class Importador {
                     } else {
                         id_municipio = Integer.parseInt(banco.retornaCelula("select id_municipio from municipio where id_estado =" + _id_estado + "and  UPPER(nome_municipio) ='" + nome_municipio.toUpperCase() + "'"));
                     }
-                    banco.exec("insert into empreendimento values(seq_id_empreendimento.nextval,'" + orgao_fiscalizador + "','" + remove(nome_empreendimento) + "'," + total_investido + ",'" + executores + "'," + id_municipio + "," + _id_estado + "," + id_digs + "," + id_estagio + ",'" + _ano + "')");
+                    banco.exec("insert into empreendimento values(seq_id_empreendimento.nextval,'" + orgao_fiscalizador + "','" + nome_empreendimento + "'," + total_investido + ",'" + executores + "'," + id_municipio + "," + _id_estado + "," + id_digs + "," + id_estagio + ",'" + _ano + "')");
                 }
                 //Fecha conexao
                 banco.desconectar();
