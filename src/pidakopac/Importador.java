@@ -21,6 +21,13 @@ public class Importador {
     private int id_estagio;
     private int id_digs;
 
+    public String remove(String str) {
+        str = Normalizer.normalize(str, Normalizer.Form.NFD);
+        str = str.replaceAll("[^\\p{ASCII}]", "");
+        return str;
+
+    }
+
     public void importar(String caminho, int _id_estado, String _ano) throws SQLException {
         BufferedReader buffer = null;
         String aux = null;
@@ -34,19 +41,19 @@ public class Importador {
                 banco = new DBcon("dako", "123456", "jdbc:oracle:thin:@localhost:1521:XE");
                 dados = linhaAtual.split(";");
                 try {
-                    id_digs = Integer.parseInt(dados[1].replaceAll("[/'-,\"]", ""));
-                    nome_empreendimento = dados[2].replaceAll("[/'-,\"]", "");
+                    id_digs = Integer.parseInt(dados[1].replaceAll("[/'-,\"-]", ""));
+                    nome_empreendimento = remove(dados[2].replaceAll("[/'-,\"-]", ""));
                     total_investido = Double.parseDouble(dados[5]);
-                    nome_municipio = dados[7].replaceAll("[/'-,\"]", "");
-                    executores = dados[8].replaceAll("[/'-,\"]", "");
-                    orgao_fiscalizador = dados[9].replaceAll("[/'-,\"]", "");
-                    id_estagio = Integer.parseInt(dados[10].replaceAll("[/'-,\"]", ""));
+                    nome_municipio = remove(dados[7].replaceAll("[/'-,\"-]", ""));
+                    executores = remove(dados[8].replaceAll("[/'-,\"–]", ""));
+                    orgao_fiscalizador = remove(dados[9].replaceAll("[/'-,\"-]", ""));
+                    id_estagio = Integer.parseInt(dados[10].replaceAll("[/'-,\"-]", ""));
                     insere = 1;
                     if (dados[7].length() > 0 && dados[7].length() <= 100) {
                         aux = dados[7];
                     }
-                    if (nome_empreendimento.length() == 0) {
-                        nome_empreendimento = "sem nome";
+                    if (nome_empreendimento.length() == 0 || nome_empreendimento == "#") {
+                        nome_empreendimento = "Sem Nome";
                     }
                 } catch (NumberFormatException e) {
                     insere = 0;
@@ -62,7 +69,7 @@ public class Importador {
                     } else {
                         id_municipio = Integer.parseInt(banco.retornaCelula("select id_municipio from municipio where id_estado =" + _id_estado + "and  UPPER(nome_municipio) ='" + nome_municipio.toUpperCase() + "'"));
                     }
-                    banco.exec("insert into empreendimento values(seq_id_empreendimento.nextval,'" + orgao_fiscalizador + "','" + nome_empreendimento + "'," + total_investido + ",'" + executores + "'," + id_municipio + "," + _id_estado + "," + id_digs + "," + id_estagio + ",'" + _ano + "')");
+                    banco.exec("insert into empreendimento values(seq_id_empreendimento.nextval,'" + orgao_fiscalizador + "','" + remove(nome_empreendimento) + "'," + total_investido + ",'" + executores + "'," + id_municipio + "," + _id_estado + "," + id_digs + "," + id_estagio + ",'" + _ano + "')");
                 }
                 //Fecha conexao
                 banco.desconectar();
@@ -81,5 +88,4 @@ public class Importador {
         }
 
     }
-    //--------------------------------------------------------------------//
 }

@@ -20,7 +20,7 @@ public class listaEmpreendimento {
     public void constroiLista(DBcon _banco) throws SQLException {
         banco = _banco;
         lista = new ArrayList();
-        ResultSet rs = this.banco.exec("select nome_empreendimento from empreendimento order by upper(nome_empreendimento)");//parametro upper usado para ignorar nao diferencias letras maiusculas e minusculas
+        ResultSet rs = this.banco.exec("select distinct nome_empreendimento from empreendimento order by upper(nome_empreendimento)");//parametro upper usado para ignorar nao diferencias letras maiusculas e minusculas
         while (rs.next()) {
             lista.add(rs.getString("nome_empreendimento"));
         }
