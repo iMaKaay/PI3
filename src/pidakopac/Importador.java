@@ -23,6 +23,7 @@ public class Importador {
     private int id_estagio;
     private int id_digs;
 
+    //Funçao que remove acentos
     public String remove(String str) {
         return Normalizer.normalize(str, Normalizer.Form.NFKD).replaceAll("[^\\p{ASCII}]", "");
     }
