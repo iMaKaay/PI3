@@ -140,6 +140,7 @@ public class TelaImportar extends javax.swing.JFrame {
                 id_estado = Integer.parseInt(banco.retornaCelula("select id_estado from estado where upper(nome_estado) ='" + _estado.getText().toUpperCase() + "'"));
                 csv.importar(_caminho.getText(),id_estado,_ano.getText());
                 showMessageDialog(null, "Sucesso na importação !!");
+                _caminho.setText(null);
             } catch (SQLException ex) {
                 Logger.getLogger(TelaImportar.class.getName()).log(Level.SEVERE, null, ex);
                 showMessageDialog(null, "Importação falhou !!");
