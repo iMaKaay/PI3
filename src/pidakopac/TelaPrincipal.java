@@ -190,6 +190,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event__manterEmpreendimentoActionPerformed
 
     private void botaoBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoBuscarActionPerformed
+        if(campoConsulta.getText() != null)
         try {
             DBcon BancoC = new DBcon("dako", "123456", "jdbc:oracle:thin:@localhost:1521:XE");
             arvore = new arvoreEmpreendimento(BancoC);
@@ -216,6 +217,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         } catch (SQLException ex) {
             Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        else if(campoConsulta.getText() == null){
+            showMessageDialog(null, "Campo vazio !!");
         }
     }//GEN-LAST:event_botaoBuscarActionPerformed
 
