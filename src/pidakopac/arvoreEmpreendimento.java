@@ -35,7 +35,7 @@ public class arvoreEmpreendimento {
     private String[] buscaNo(noEmpreendimento noAtual, String nome) throws SQLException {
         DBcon BancoC = new DBcon("dako", "123456", "jdbc:oracle:thin:@localhost:1521:XE");
         String[] resultado = new String[6];
-        if (!BancoC.jaExiste("select nome_empreendimento from empreendimento where UPPER(nome_empreendimento)=UPPER('" + nome + "')")) {
+        if (BancoC.jaExiste("select nome_empreendimento from empreendimento where UPPER(nome_empreendimento)=UPPER('" + nome + "')")) {
             if (noAtual != null) {
                 if (nome.toUpperCase().equals(noAtual.getNome().toUpperCase())) {
                     ResultSet rs = BancoC.exec("select * from empreendimento where UPPER(nome_empreendimento)=UPPER('" + nome + "')");
