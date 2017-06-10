@@ -26,7 +26,7 @@ public class Json {
         String nome_estado = null;
         //Gera o arquivo JSON
         PrintWriter writer;
-        writer = new PrintWriter(caminhoIndicadores + "\\" + ("Dados do ano de " + ano + ".json"), "UTF-8");
+        writer = new PrintWriter(caminhoIndicadores + "\\" + (ano + ".json"), "UTF-8");
         for (int i = 1; i <= 27; i++) {
             nome_estado = _banco.retornaCelula("select nome_estado from estado where id_estado =" + i);
             if (i == 1) {
