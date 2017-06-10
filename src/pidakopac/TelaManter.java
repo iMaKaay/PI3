@@ -9,7 +9,6 @@ public class TelaManter extends javax.swing.JFrame {
     
     private TelaPrincipal principal;
     private String[] lista;
-    private DBcon banco;
     private int idSelecionada;
     private String caminhoIndicadores;
     private arvoreEmpreendimento arvore;
@@ -21,15 +20,12 @@ public class TelaManter extends javax.swing.JFrame {
     public void setPrincipal(TelaPrincipal _tela) {
         this.principal = _tela;
     }
-    public void setBanco (DBcon _banco){
-        banco = _banco;
-    }
-    public void carregaLista(DBcon _banco) throws SQLException {
-        
+    
+    public void carregaLista() throws SQLException {
+        DBcon bancoC = new DBcon("dako", "123456", "jdbc:oracle:thin:@localhost:1521:XE");
         //Carrega a lista de empresas cadastradas para exibição 
-        this.banco = _banco;
         listaEmpreendimento listaTmp = new listaEmpreendimento();
-        listaTmp.constroiLista(this.banco);
+        listaTmp.constroiLista(bancoC);
         lista = listaTmp.listaEmpreendimento();
         comboListaEmpreendimento.setEnabled(true);
         botaoExcluir.setEnabled(true);
@@ -165,10 +161,12 @@ public class TelaManter extends javax.swing.JFrame {
 
     private void botaoExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoExcluirActionPerformed
         try {
-            banco.exec("delete empreendimento where id_empreendimento ='" + idSelecionada + "'");
-            banco.exec("commit");
-            carregaLista(banco);//atualiza lista de empresas exibida
+            DBcon bancoD = new DBcon("dako", "123456", "jdbc:oracle:thin:@localhost:1521:XE");
+            bancoD.exec("delete empreendimento where id_empreendimento ='" + idSelecionada + "'");
+            bancoD.exec("commit");
+            carregaLista();//atualiza lista de empresas exibida
             idSelecionada = 0;//reseta id da empresa selecionada
+            bancoD.desconectar();
         } catch (SQLException ex) {
             Logger.getLogger(TelaManter.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -178,7 +176,9 @@ public class TelaManter extends javax.swing.JFrame {
         //Realiza atualização das informaçoes 
         String empreendimentoSelecionado = comboListaEmpreendimento.getItemAt(comboListaEmpreendimento.getSelectedIndex());
         try {
-            idSelecionada = Integer.parseInt(banco.retornaCelula("select id_empreendimento from empreendimento where nome_empreendimento ='" + empreendimentoSelecionado + "'"));
+            DBcon bancoD = new DBcon("dako", "123456", "jdbc:oracle:thin:@localhost:1521:XE");
+            idSelecionada = Integer.parseInt(bancoD.retornaCelula("select id_empreendimento from empreendimento where nome_empreendimento ='" + empreendimentoSelecionado + "'"));
+            bancoD.desconectar();
         } catch (SQLException | NumberFormatException ex) {
             Logger.getLogger(TelaManter.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -186,7 +186,6 @@ public class TelaManter extends javax.swing.JFrame {
 
     private void botaoCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCadastrarActionPerformed
         TelaCadastro TelaCadastro = new TelaCadastro();
-        TelaCadastro.setBanco(banco);
         TelaCadastro.setVisible(true);
         TelaCadastro.setTelaManter(this);
         this.disable();

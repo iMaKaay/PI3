@@ -15,15 +15,11 @@ public class TelaCadastro extends javax.swing.JFrame {
     private int id_municipio;
     private int id_digs;
     private int id_estagio;
-    private DBcon banco;
+    private String ano;
     private TelaManter TelaManter;
 
     public void setTelaManter(TelaManter _telaManter) {
         this.TelaManter = _telaManter;
-    }
-
-    public void setBanco(DBcon _banco) {
-        banco = _banco;
     }
 
     public TelaCadastro() {
@@ -52,6 +48,8 @@ public class TelaCadastro extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         _idDigs = new javax.swing.JTextField();
         _idEstagio = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        _ano = new javax.swing.JTextField();
         botaoVoltar = new javax.swing.JButton();
         botaoOk = new javax.swing.JButton();
 
@@ -77,6 +75,8 @@ public class TelaCadastro extends javax.swing.JFrame {
 
         jLabel9.setText("Conversão Estágio");
 
+        jLabel10.setText("Ano");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -85,31 +85,37 @@ public class TelaCadastro extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(_idDigs, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(_executores, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel8)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(_orgaoFiscalizador, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
-                                        .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(_estado)
-                                        .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING))
-                                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING))
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addGap(14, 14, 14)))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel9)
-                    .addComponent(jLabel7)
-                    .addComponent(jLabel3)
-                    .addComponent(_municipio)
-                    .addComponent(jLabel5)
-                    .addComponent(_nomeEmpreendimento)
-                    .addComponent(_totalInvestido)
-                    .addComponent(_idEstagio, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE))
+                                    .addComponent(_idDigs, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(_executores, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                .addComponent(_orgaoFiscalizador, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+                                                .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(_estado)
+                                                .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING))
+                                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING))
+                                        .addGap(0, 3, Short.MAX_VALUE))
+                                    .addComponent(_ano, javax.swing.GroupLayout.Alignment.LEADING))
+                                .addGap(14, 14, 14)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel9)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel3)
+                            .addComponent(_municipio)
+                            .addComponent(jLabel5)
+                            .addComponent(_nomeEmpreendimento)
+                            .addComponent(_totalInvestido)
+                            .addComponent(_idEstagio, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel10)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -147,7 +153,11 @@ public class TelaCadastro extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(_idDigs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(_idEstagio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel10)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(_ano, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         botaoVoltar.setText("Voltar");
@@ -192,11 +202,11 @@ public class TelaCadastro extends javax.swing.JFrame {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(botaoVoltar)
                     .addComponent(botaoOk))
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -209,7 +219,7 @@ public class TelaCadastro extends javax.swing.JFrame {
         TelaManter.setVisible(true);
         TelaManter.enable();
         try {
-            TelaManter.carregaLista(banco);
+            TelaManter.carregaLista();
         } catch (SQLException ex) {
             Logger.getLogger(TelaCadastro.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -218,12 +228,14 @@ public class TelaCadastro extends javax.swing.JFrame {
     private void botaoOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoOkActionPerformed
         int verificado = 0;
         try {
+            DBcon bancoC = new DBcon("dako", "123456", "jdbc:oracle:thin:@localhost:1521:XE");
             //Verifica se o nome da empresa já está em uso.
-            if (!banco.jaExiste("select nome_empreendimento from empreendimento where nome_empreendimento ='" + nome_empreendimento + "'")) {
+            if (!bancoC.jaExiste("select nome_empreendimento from empreendimento where nome_empreendimento ='" + nome_empreendimento + "'")) {
                 verificado++;
             } else {
                 showMessageDialog(null, "Já existe um empreendimento cadastrado com o mesmo nome!");
             }
+            bancoC.desconectar();
         } catch (SQLException ex) {
             Logger.getLogger(TelaCadastro.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -278,12 +290,13 @@ public class TelaCadastro extends javax.swing.JFrame {
         }
 
         try {
+            DBcon bancoI = new DBcon("dako", "123456", "jdbc:oracle:thin:@localhost:1521:XE");
             nome_empreendimento = _nomeEmpreendimento.getText();
-            id_estado = Integer.parseInt(banco.retornaCelula("select id_estado from estado where upper(nome_estado) ='" + _estado.getText().toUpperCase() + "'"));
-            if(banco.retornaCelula("select id_municipio from municipio where upper(nome_municipio) ='" + _municipio.getText().toUpperCase() + "'") != null)
-                id_municipio = Integer.parseInt(banco.retornaCelula("select id_municipio from municipio where upper(nome_municipio) ='" + _municipio.getText().toUpperCase() + "'"));
+            id_estado = Integer.parseInt(bancoI.retornaCelula("select id_estado from estado where upper(nome_estado) ='" + _estado.getText().toUpperCase() + "'"));
+            if(bancoI.retornaCelula("select id_municipio from municipio where upper(nome_municipio) ='" + _municipio.getText().toUpperCase() + "'") != null)
+                id_municipio = Integer.parseInt(bancoI.retornaCelula("select id_municipio from municipio where upper(nome_municipio) ='" + _municipio.getText().toUpperCase() + "'"));
             else
-                banco.exec("INSERT INTO municipio VALUES(seq_id_municipio.nextval,'" + _municipio.getText().toUpperCase() + "'," + id_estado + ")");
+                bancoI.exec("INSERT INTO municipio VALUES(seq_id_municipio.nextval,'" + _municipio.getText().toUpperCase() + "'," + id_estado + ")");
             //Realiza o cadastro caso as 8 validações tenham sido feitas.
             if (verificado == 8) {
                 orgao_fiscalizador = _orgaoFiscalizador.getText();
@@ -291,14 +304,16 @@ public class TelaCadastro extends javax.swing.JFrame {
                 total_investido = Double.parseDouble(_totalInvestido.getText());
                 id_digs = Integer.parseInt(_idDigs.getText());
                 id_estagio = Integer.parseInt(_idEstagio.getText());
+                ano = _ano.getText();
                 Empreendimento novoEmpreendimento = new Empreendimento();
-                novoEmpreendimento.cadastro(orgao_fiscalizador, nome_empreendimento, total_investido, executores,id_municipio, id_estado, id_digs, id_estagio);
-                banco.exec(novoEmpreendimento.getQuery());
-                banco.exec("commit");
+                novoEmpreendimento.cadastro(orgao_fiscalizador, nome_empreendimento, total_investido, executores,id_municipio, id_estado, id_digs, id_estagio, ano);
+                bancoI.exec(novoEmpreendimento.getQuery());
+                bancoI.exec("commit");
+                bancoI.desconectar();
                 showMessageDialog(null,"Cadastro realizado!");
                 this.setVisible(false);
                 TelaManter.setVisible(true);
-                TelaManter.carregaLista(banco);
+                TelaManter.carregaLista();
                 TelaManter.enable();
             }
         } catch (SQLException ex) {
@@ -339,6 +354,7 @@ public class TelaCadastro extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField _ano;
     private javax.swing.JTextField _estado;
     private javax.swing.JTextField _executores;
     private javax.swing.JTextField _idDigs;
@@ -350,6 +366,7 @@ public class TelaCadastro extends javax.swing.JFrame {
     private javax.swing.JButton botaoOk;
     private javax.swing.JButton botaoVoltar;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

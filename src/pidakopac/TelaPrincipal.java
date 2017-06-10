@@ -182,9 +182,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
         TelaManter manter = new TelaManter();
         manter.setVisible(true);
         manter.setPrincipal(this);
-        manter.setBanco(this.banco);
         try {
-            manter.carregaLista(banco);
+            manter.carregaLista();
         } catch (SQLException ex) {
             Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
